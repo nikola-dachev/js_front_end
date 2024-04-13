@@ -20,13 +20,12 @@ function solve(){
 		
 		editMealBtn.disabled = true
 		listMealRef.textContent = ''
-        
 		
 		let response = await fetch(baseURL)
 		let allMeals = await response.json()
 		
 		for (let meal of Object.values(allMeals)){
-            
+            console.log(meal)
 			
 			let newDiv = document.createElement('div')
 			newDiv.className = 'meal'
@@ -78,12 +77,14 @@ function solve(){
 			function changeBtnClicked(){
 				editMealBtn.disabled = false
 				addMealBtn.disabled = true 
-
+                
+                newDiv.remove()
+				
 				foodFieldRef.value = meal.food
 				timeFieldRef.value= meal.time
 				caloriesFieldRef.value = meal.calories
 				
-				newDiv.remove()
+				
 				
 				editMealBtn.addEventListener('click', editMealBtnClicked)
 				
@@ -103,9 +104,8 @@ function solve(){
 					let result = await response.json()
 					
 					loadMealsBtnClicked()
-
-                    editMealBtn.disabled = true
-				    addMealBtn.disabled = false
+					editMealBtn.disabled = true
+					addMealBtn.disabled = false
 					
 				}
 				
@@ -125,8 +125,11 @@ function solve(){
 			let newObject = {
 				food: foodFieldRef.value,
 				time: timeFieldRef.value,
-				calories: caloriesFieldRef.value
+				calories:caloriesFieldRef.value
 			}
+			foodFieldRef.value = ''
+			timeFieldRef.value= ''
+			caloriesFieldRef.value = ''
 			
 			let response = await fetch(baseURL, {
 				method: 'POST',
@@ -134,14 +137,8 @@ function solve(){
 			});
 			
 			let result = await response.json()
-
-            foodFieldRef.value = ''
-			timeFieldRef.value= ''
-			caloriesFieldRef.value = ''
-			
-			loadMealsBtnClicked()
-
             
+			loadMealsBtnClicked()
 		}
 		
 	}	
